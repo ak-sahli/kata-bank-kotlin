@@ -1,7 +1,9 @@
 # Bank
 
 A simple bank account program
- 
+
+[![CircleCI](https://circleci.com/gh/ak-sahli/kata-bank-kotlin.svg?style=svg)](https://circleci.com/gh/ak-sahli/kata-bank-kotlin)
+
 ### Requirements
 * Withdraw/deposit a valid amount of money in/from the account
 * Transfer a specified amount of money from one bank account (the payer) to another (the payee)
