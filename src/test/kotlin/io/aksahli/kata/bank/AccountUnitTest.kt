@@ -54,7 +54,7 @@ data class IllegalAmountException(val requestedAmount: Amount)
 data class IllegalBalanceException(val requestedAmount: Amount, val currentBalance: Amount)
     : IllegalStateException("Requested amount ($requestedAmount) exceeds the current balance ($currentBalance)")
 
-data class Account(val owner: String, val initialAmount: Amount) {
+data class Account(val owner: String, val initialAmount: Amount = 0.0) {
 
     private var balance = initialAmount
 
