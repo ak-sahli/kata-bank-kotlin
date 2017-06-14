@@ -47,6 +47,12 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.spek</groupId>
+            <artifactId>spek-subject-extension</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.spek</groupId>
             <artifactId>spek-junit-platform-engine</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
