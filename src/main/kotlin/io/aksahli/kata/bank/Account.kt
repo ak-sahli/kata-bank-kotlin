@@ -32,4 +32,23 @@ data class Account(val owner: String, val initialAmount: Amount = 0.0) {
             throw IllegalBalanceException(requestedAmount, this.balance)
         }
     }
+
+    fun transfer(amount: Amount): Transfer = Transfer(this, amount)
+}
+
+class Transfer(val payer: Account, val transferAmount: Amount) {
+
+    fun to(payee: Account) {
+        try {
+            payer.withdraw(transferAmount)
+            payee.deposit(transferAmount)
+        } catch ( exception: Exception ) {
+            when(exception) {
+                is IllegalAmountException,
+                is IllegalBalanceException ->  throw IllegalTransferException(transferAmount, payer, payee, exception)
+                else -> throw exception
+            }
+        }
+    }
+
 }
