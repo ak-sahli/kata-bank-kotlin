@@ -16,7 +16,7 @@ object AccountUnitTest : SubjectSpek<Account>({
         on("deposit") {
             it("should increase the balance after a deposit of a valid requestedAmount of money") {
                 subject deposit 500.00
-                assertEquals(1500.00, subject.balance())
+                assertEquals(expected = 1500.00, actual = subject.balance)
             }
             it("should throw an error after a withdrawal of an invalid requestedAmount of money") {
                 assertFailsWith(IllegalAmountException::class) {
@@ -28,7 +28,7 @@ object AccountUnitTest : SubjectSpek<Account>({
         on("withdraw") {
             it("should decrease the balance after a withdrawal of a valid requestedAmount of money") {
                 subject withdraw 500.00
-                assertEquals(500.00, subject.balance())
+                assertEquals(500.00, subject.balance)
             }
             it("should throw an error after a withdrawal of an invalid requestedAmount of money") {
                 assertFailsWith(IllegalAmountException::class) {

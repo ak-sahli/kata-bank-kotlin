@@ -2,31 +2,34 @@ package io.aksahli.kata.bank
 
 data class Account(val owner: String, val initialAmount: Amount = 0.0) {
 
-    private var balance = initialAmount
+    var balance:Amount
+        private set
 
-    private fun validateAmount(requestedAmount: Amount) {
-        if (requestedAmount < 0) {
-            throw IllegalAmountException(requestedAmount = requestedAmount)
-        }
-    }
-
-    private fun validateBalance(requestedAmount: Amount) {
-        if (requestedAmount >= this.balance) {
-            throw IllegalBalanceException(requestedAmount = requestedAmount, currentBalance = balance)
-        }
+    init {
+        ensureAmountIsPositive(initialAmount)
+        this.balance = initialAmount
     }
 
     infix fun deposit(amount: Amount) {
-        validateAmount(amount)
+        ensureAmountIsPositive(amount)
         this.balance = this.balance + amount
     }
 
-    infix fun  withdraw(amount: Amount) {
-        validateAmount(amount)
-        validateBalance(amount)
-        this.balance = this.balance - amount
+    infix fun  withdraw(requestedAmount: Amount) {
+        ensureAmountIsPositive(requestedAmount)
+        ensureBalanceIsSufficient(requestedAmount)
+        this.balance = this.balance - requestedAmount
     }
 
-    fun balance(): Amount = this.balance
+    private fun ensureAmountIsPositive(amount: Amount) {
+        if (amount < 0) {
+            throw IllegalAmountException(requestedAmount = amount)
+        }
+    }
 
+    private fun ensureBalanceIsSufficient(requestedAmount: Amount) {
+        if (requestedAmount > this.balance) {
+            throw IllegalBalanceException(requestedAmount, this.balance)
+        }
+    }
 }
