@@ -55,6 +55,7 @@
             <groupId>org.jetbrains.spek</groupId>
             <artifactId>spek-junit-platform-engine</artifactId>
             <version>${kotlin.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
