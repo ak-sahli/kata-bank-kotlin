@@ -33,19 +33,19 @@ data class Account(val owner: String, val initialAmount: Amount = 0.0) {
         }
     }
 
-    fun transfer(amount: Amount): Transfer = Transfer(this, amount)
-}
-
-class Transfer(val payer: Account, val transferAmount: Amount) {
-
-    fun to(payee: Account) {
+    fun transfer(amount: Amount, payeeAccount: Account) {
         try {
-            payer.withdraw(transferAmount)
-            payee.deposit(transferAmount)
+            this.withdraw(amount)
+            payeeAccount.deposit(amount)
         } catch ( exception: Exception ) {
             when(exception) {
                 is IllegalAmountException,
-                is IllegalBalanceException ->  throw IllegalTransferException(transferAmount, payer, payee, exception)
+                is IllegalBalanceException ->  throw IllegalTransferException (
+                        amount = amount,
+                        payer = this,
+                        payee = payeeAccount,
+                        cause = exception
+                )
                 else -> throw exception
             }
         }
