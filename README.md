@@ -1,6 +1,6 @@
 # Bank
 
-A simple bank account program
+A simple bank account program implemented in Kotlin
 
 [![CircleCI](https://circleci.com/gh/ak-sahli/kata-bank-kotlin.svg?style=svg)](https://circleci.com/gh/ak-sahli/kata-bank-kotlin)
 

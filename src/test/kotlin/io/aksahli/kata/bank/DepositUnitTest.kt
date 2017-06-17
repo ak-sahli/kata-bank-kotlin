@@ -1,28 +1,43 @@
 package io.aksahli.kata.bank
 
-import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
 import org.jetbrains.spek.subject.SubjectSpek
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import kotlin.test.assertFails
+import kotlin.test.assertTrue
 
 object DepositUnitTest : SubjectSpek<Account>({
 
-    describe("a bank account") {
+    given("a bank account") {
 
         subject { Account(owner = "Bruce Wayne", initialAmount = 1000.00) }
 
-        it("should increase the balance after a deposit of money") {
+        on("deposit a valid amount of money") {
             subject.deposit(500.00)
-            assertEquals(expected = 1500.00, actual = subject.balance)
+            it("should increase the balance after a deposit of money") {
+                assertEquals(expected = 1500.00, actual = subject.balance())
+            }
+            it("should record a deposit transaction") {
+                assertEquals(expected = 2, actual = subject.transactions().size)
+            }
         }
 
-        it("should throw an exception after a deposit of an invalid amount of money") {
-            assertFailsWith(IllegalAmountException::class) {
-                subject.deposit(-500.00)
+        on("deposit an invalid amount of money") {
+            val depositException = assertFails { subject.deposit(-500.00) }
+            it("should throw an illegal amount exception") {
+                assertTrue { depositException is IllegalAmountException }
+            }
+            it("should keep the balance as is") {
+                assertEquals(1000.00, subject.balance())
+            }
+            it("should not record a deposit transaction") {
+                assertEquals(expected = 1, actual = subject.transactions().size)
             }
         }
 
     }
 
 })
+

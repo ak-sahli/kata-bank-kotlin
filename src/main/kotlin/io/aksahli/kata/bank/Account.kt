@@ -1,24 +1,24 @@
 package io.aksahli.kata.bank
 
-class Account(val owner: String,initialAmount: Double = 0.0) {
+import io.aksahli.kata.bank.TransactionType.*
 
-    var balance: Double
-        private set
+class Account(val owner: String, initialAmount: Double = 0.0) {
+
+    val transactions: MutableList<Transaction> = mutableListOf()
 
     init {
-        ensureAmountIsPositive(initialAmount)
-        this.balance = initialAmount
+        this.deposit(initialAmount)
     }
 
     fun deposit(amount: Double) {
         ensureAmountIsPositive(amount)
-        this.balance = this.balance + amount
+        this.transactions.add(Transaction(type = DEPOSIT, amount = amount))
     }
 
     fun withdraw(requestedAmount: Double) {
         ensureAmountIsPositive(requestedAmount)
         ensureBalanceIsSufficient(requestedAmount)
-        this.balance = this.balance - requestedAmount
+        this.transactions.add(Transaction(type = WITHDRAW, amount = requestedAmount))
     }
 
     fun transfer(amount: Double, payeeAccount: Account) {
@@ -26,7 +26,18 @@ class Account(val owner: String,initialAmount: Double = 0.0) {
         payeeAccount.deposit(amount)
     }
 
-    override fun toString() = "account {owner: $owner, balance: $balance}"
+    fun balance() = transactions
+            .map {
+                when(it.type) {
+                    DEPOSIT -> it.amount
+                    WITHDRAW -> -it.amount
+                }
+            }
+            .reduce { accumulatedAmount, amount -> amount + accumulatedAmount }
+
+    fun transactions() = transactions.map { it }
+
+    override fun toString() = "account {owner: $owner, balance: ${balance()}}"
 
     private fun ensureAmountIsPositive(amount: Double) {
         if (amount < 0) {
@@ -35,9 +46,10 @@ class Account(val owner: String,initialAmount: Double = 0.0) {
     }
 
     private fun ensureBalanceIsSufficient(requestedAmount: Double) {
-        if (requestedAmount > this.balance) {
-            throw InsufficientBalanceException(requestedAmount, this.balance)
+        if (requestedAmount > this.balance()) {
+            throw InsufficientBalanceException(requestedAmount, this.balance())
         }
     }
 
 }
+

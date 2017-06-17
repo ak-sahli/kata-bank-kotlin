@@ -15,22 +15,23 @@ object TransferUnitTest : Spek({
         var payeeAccount = Account("Clark Kent")
 
         beforeEachTest {
-            payerAccount.deposit(1000.00)
-            payeeAccount.deposit(1000.00)
-        }
-
-        afterEachTest {
-            payerAccount.withdraw(payerAccount.balance)
-            payeeAccount.withdraw(payeeAccount.balance)
+            payerAccount = Account("Bruce Wayne", 1000.00)
+            payeeAccount = Account("Clark Kent", 1000.00)
         }
 
         on("a transfer of a valid amount of money") {
             payerAccount.transfer(500.00, payeeAccount)
             it("should withdraw the amount from the payer account") {
-                assertEquals(500.00, payerAccount.balance)
+                assertEquals(500.00, payerAccount.balance())
+            }
+            it("should record a withdraw transaction in the payer account") {
+                assertEquals(expected = 2, actual = payerAccount.transactions().size)
             }
             it("should deposit the amount in the payee account") {
-                assertEquals(1500.00, payeeAccount.balance)
+                assertEquals(1500.00, payeeAccount.balance())
+            }
+            it("should record a deposit transaction in the payee account") {
+                assertEquals(expected = 2, actual = payeeAccount.transactions().size)
             }
         }
 
@@ -40,10 +41,16 @@ object TransferUnitTest : Spek({
                 assertTrue { transferException is IllegalAmountException }
             }
             it("should not withdraw money from the payer account") {
-                assertEquals(1000.00, payerAccount.balance)
+                assertEquals(1000.00, payerAccount.balance())
+            }
+            it("should not record a withdraw transaction in the payer account") {
+                assertEquals(expected = 1, actual = payerAccount.transactions().size)
             }
             it("should not deposit money in the payee account") {
-                assertEquals(1000.00, payeeAccount.balance)
+                assertEquals(1000.00, payeeAccount.balance())
+            }
+            it("should not record a deposit transaction in the payee account") {
+                assertEquals(expected = 1, actual = payerAccount.transactions().size)
             }
         }
 
@@ -53,10 +60,16 @@ object TransferUnitTest : Spek({
                 assertTrue { transferException is InsufficientBalanceException }
             }
             it("should not withdraw money from the payer account") {
-                assertEquals(1000.00, payerAccount.balance)
+                assertEquals(1000.00, payerAccount.balance())
+            }
+            it("should not record a withdraw transaction in the payer account") {
+                assertEquals(expected = 1, actual = payerAccount.transactions().size)
             }
             it("should not deposit money in the payee account") {
-                assertEquals(1000.00, payeeAccount.balance)
+                assertEquals(1000.00, payeeAccount.balance())
+            }
+            it("should not record a deposit transaction in the payee account") {
+                assertEquals(expected = 1, actual = payerAccount.transactions().size)
             }
         }
     }
