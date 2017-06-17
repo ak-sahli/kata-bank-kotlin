@@ -1,5 +1,14 @@
 package io.aksahli.kata.bank
 
-import java.util.*
+class Transaction(val type: TransactionType, amount: Double) {
 
-data class Transaction(val type: TransactionType, val amount: Double, val date: Date = Date())
+    val amount: Double
+
+    init {
+        if (amount < 0) { throw IllegalAmountException(requestedAmount = amount) }
+        this.amount = amount
+    }
+
+    fun amount(): Double = type.value(amount)
+
+}
