@@ -29,7 +29,7 @@ data class Account(val owner: String, val initialAmount: Amount = 0.0) {
 
     private fun ensureBalanceIsSufficient(requestedAmount: Amount) {
         if (requestedAmount > this.balance) {
-            throw IllegalBalanceException(requestedAmount, this.balance)
+            throw InsufficientBalanceException(requestedAmount, this.balance)
         }
     }
 
@@ -40,7 +40,7 @@ data class Account(val owner: String, val initialAmount: Amount = 0.0) {
         } catch ( exception: Exception ) {
             when(exception) {
                 is IllegalAmountException,
-                is IllegalBalanceException ->  throw IllegalTransferException (
+                is InsufficientBalanceException ->  throw IllegalTransferException (
                         amount = amount,
                         payer = this,
                         payee = payeeAccount,

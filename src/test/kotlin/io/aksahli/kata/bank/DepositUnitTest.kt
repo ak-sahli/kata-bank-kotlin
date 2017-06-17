@@ -13,15 +13,12 @@ object DepositUnitTest : SubjectSpek<Account>({
 
         subject { Account(owner = "Bruce Wayne", initialAmount = 1000.00) }
 
-        on("deposit a valid amount of money") {
+        it("should increase the balance after a deposit of money") {
             subject deposit 500.00
-            it("should increase the balance after a deposit of a valid requested amount of money") {
-                assertEquals(expected = 1500.00, actual = subject.balance)
-            }
+            assertEquals(expected = 1500.00, actual = subject.balance)
         }
 
-
-        it("should throw an error after a deposit of an invalid requested amount of money") {
+        it("should throw an exception after a deposit of an invalid amount of money") {
             assertFailsWith(IllegalAmountException::class) {
                 subject deposit -500.00
             }
