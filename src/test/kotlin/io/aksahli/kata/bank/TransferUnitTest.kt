@@ -37,7 +37,7 @@ object TransferUnitTest : Spek({
         on("a transfer of an invalid amount of money") {
             val transferException = assertFails { payerAccount.transfer(-500.00, payeeAccount) }
             it("should throw an illegal transfer exception") {
-                assertTrue { transferException is IllegalTransferException }
+                assertTrue { transferException is IllegalAmountException }
             }
             it("should not withdraw money from the payer account") {
                 assertEquals(1000.00, payerAccount.balance)
@@ -50,7 +50,7 @@ object TransferUnitTest : Spek({
         on("a transfer of an amount of money that exceeds the payer balance") {
             val transferException = assertFails { payerAccount.transfer(1500.00, payeeAccount) }
             it("should throw an illegal transfer exception") {
-                assertTrue { transferException is IllegalTransferException }
+                assertTrue { transferException is InsufficientBalanceException }
             }
             it("should not withdraw money from the payer account") {
                 assertEquals(1000.00, payerAccount.balance)

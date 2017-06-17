@@ -1,8 +1,8 @@
 package io.aksahli.kata.bank
 
-data class Account(val owner: String, val initialAmount: Amount = 0.0) {
+class Account(val owner: String,initialAmount: Double = 0.0) {
 
-    var balance:Amount
+    var balance: Double
         private set
 
     init {
@@ -10,44 +10,33 @@ data class Account(val owner: String, val initialAmount: Amount = 0.0) {
         this.balance = initialAmount
     }
 
-    infix fun deposit(amount: Amount) {
+    fun deposit(amount: Double) {
         ensureAmountIsPositive(amount)
         this.balance = this.balance + amount
     }
 
-    infix fun  withdraw(requestedAmount: Amount) {
+    fun withdraw(requestedAmount: Double) {
         ensureAmountIsPositive(requestedAmount)
         ensureBalanceIsSufficient(requestedAmount)
         this.balance = this.balance - requestedAmount
     }
 
-    private fun ensureAmountIsPositive(amount: Amount) {
+    fun transfer(amount: Double, payeeAccount: Account) {
+        this.withdraw(amount)
+        payeeAccount.deposit(amount)
+    }
+
+    override fun toString() = "account {owner: $owner, balance: $balance}"
+
+    private fun ensureAmountIsPositive(amount: Double) {
         if (amount < 0) {
             throw IllegalAmountException(requestedAmount = amount)
         }
     }
 
-    private fun ensureBalanceIsSufficient(requestedAmount: Amount) {
+    private fun ensureBalanceIsSufficient(requestedAmount: Double) {
         if (requestedAmount > this.balance) {
             throw InsufficientBalanceException(requestedAmount, this.balance)
-        }
-    }
-
-    fun transfer(amount: Amount, payeeAccount: Account) {
-        try {
-            this.withdraw(amount)
-            payeeAccount.deposit(amount)
-        } catch ( exception: Exception ) {
-            when(exception) {
-                is IllegalAmountException,
-                is InsufficientBalanceException ->  throw IllegalTransferException (
-                        amount = amount,
-                        payer = this,
-                        payee = payeeAccount,
-                        cause = exception
-                )
-                else -> throw exception
-            }
         }
     }
 
