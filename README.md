@@ -1,10 +1,10 @@
-# Bank
+# Kata : Bank Account
 
 A simple bank account program implemented in Kotlin
 
 [![CircleCI](https://circleci.com/gh/ak-sahli/kata-bank-kotlin.svg?style=svg)](https://circleci.com/gh/ak-sahli/kata-bank-kotlin)
 
-### Requirements
+### Features
 * Withdraw/deposit a valid amount of money in/from the account
 * Transfer a specified amount of money from one bank account (the payer) to another (the payee)
 * Keep a record of the transfer for both bank accounts in a transaction history
