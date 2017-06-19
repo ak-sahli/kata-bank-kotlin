@@ -25,13 +25,15 @@ object TransferUnitTest : Spek({
                 assertEquals(500.00, payerAccount.balance())
             }
             it("should record a withdraw transaction in the payer account") {
-                assertEquals(expected = 2, actual = payerAccount.transactions().size)
+                val lastTransaction: Withdraw = payerAccount.transactions().last() as Withdraw
+                assertEquals(expected = "Clark Kent", actual = lastTransaction.to)
             }
             it("should deposit the amount in the payee account") {
                 assertEquals(1500.00, payeeAccount.balance())
             }
             it("should record a deposit transaction in the payee account") {
-                assertEquals(expected = 2, actual = payeeAccount.transactions().size)
+                val lastTransaction: Deposit = payeeAccount.transactions().last() as Deposit
+                assertEquals(expected = "Bruce Wayne", actual = lastTransaction.from)
             }
         }
 

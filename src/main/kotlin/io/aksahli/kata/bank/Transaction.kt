@@ -1,6 +1,6 @@
 package io.aksahli.kata.bank
 
-class Transaction(val type: TransactionType, amount: Double) {
+abstract class Transaction(val type: TransactionType, amount: Double,val from: String = "",val to: String = "") {
 
     val amount: Double
 
@@ -9,6 +9,6 @@ class Transaction(val type: TransactionType, amount: Double) {
         this.amount = amount
     }
 
-    fun amount(): Double = type.value(amount)
+   abstract fun amount(): Double
 
 }

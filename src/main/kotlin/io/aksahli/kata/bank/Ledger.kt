@@ -1,5 +1,7 @@
 package io.aksahli.kata.bank
 
+import io.aksahli.kata.bank.TransactionType.*
+
 class Ledger {
 
     private val transactions: MutableList<Transaction> = mutableListOf()
@@ -11,5 +13,11 @@ class Ledger {
             .reduce { accumulatedAmount, amount -> amount + accumulatedAmount }
 
     fun transactions() = transactions.map { it }
+
+    fun transactions(transactionType: TransactionType, account: String) = transactions()
+            .filter { when(transactionType) {
+                DEPOSIT  -> it.from == account
+                WITHDRAW -> it.to == account
+            }}
 
 }
